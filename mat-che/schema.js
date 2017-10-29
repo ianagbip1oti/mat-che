@@ -10,6 +10,10 @@ type Query {
   me: User
 }
 
+type Mutation {
+  setName(name: String!): User
+}
+
 `;
 
 export const schema = makeExecutableSchema({ typeDefs });
