@@ -10,15 +10,15 @@
     "prestart": "npm-run-all format build",
     "start": "npm-run-all --parallel watch:server watch:build",
     "watch:build": "webpack --watch",
-    "watch:server": "nodemon ./server.js --exec babel-node -e js"
+    "watch:server": "DEBUG=* nodemon ./server.js --exec babel-node -e js"
   },
   "author": "Lana",
   "license": "MIT",
   "dependencies": {
     "express": "^4.16.2",
-    "react": "^15.0.0",
-    "react-apollo": "^2.0.0",
-    "react-dom": "^15.0.0",
+    "react": "^16.0.0",
+    "react-apollo": "^1.0.0",
+    "react-dom": "^16.0.0",
     "semantic-ui-react": "^0.75.1"
   },
   "devDependencies": {
@@ -26,7 +26,9 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "enzyme": "^3.1.0",
     "nodemon": "^1.12.1",
+    "npm-run-all": "^4.1.1",
     "prettier": "^1.7.4",
     "webpack": "^3.8.1"
   }
