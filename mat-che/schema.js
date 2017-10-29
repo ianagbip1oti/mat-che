@@ -1,8 +1,9 @@
+import { makeExecutableSchema } from "graphql-tools";
+
 export const typeDefs = `
 
 type User {
   name: String!
-  color: String!
 }
 
 type Query {
@@ -10,3 +11,5 @@ type Query {
 }
 
 `;
+
+export const schema = makeExecutableSchema({ typeDefs });

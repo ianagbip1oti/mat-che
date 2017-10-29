@@ -2,7 +2,7 @@ import React from "react";
 
 import { gql, graphql } from "react-apollo";
 
-import { Icon, Input, Message } from "semantic-ui-react";
+import { Button, Header, Icon, Input, Message, Modal } from "semantic-ui-react";
 
 const meQuery = gql`
   query meQuery {
@@ -21,6 +21,7 @@ export const SendMessage = ({ data: { loading, error, me } }) => {
       </Message>
     );
   }
+
   if (error) {
     return (
       <Message icon negative>
@@ -32,6 +33,20 @@ export const SendMessage = ({ data: { loading, error, me } }) => {
       </Message>
     );
   }
+
+  if (!me) {
+    return (
+      <Modal open>
+        <Modal.Header>Choose a Name</Modal.Header>
+        <Modal.Content>
+          <Modal.Description>
+            <Input icon={{ name: "send", link: true }} fluid />
+          </Modal.Description>
+        </Modal.Content>
+      </Modal>
+    );
+  }
+
   return <Input label={me.name} icon={{ name: "send", link: true }} fluid />;
 };
 
