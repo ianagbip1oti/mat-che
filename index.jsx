@@ -5,16 +5,25 @@ import { Container, Header, Menu, Segment } from "semantic-ui-react";
 
 import { SendMessageWithData } from "./mat-che/components.jsx";
 
-import { ApolloClient, ApolloProvider } from "react-apollo";
+import { ApolloClient, ApolloProvider, createNetworkInterface } from "react-apollo";
 
-const client = new ApolloClient();
+const networkInterface = createNetworkInterface({
+  uri: '/graphql',
+  opts: {
+    credentials: 'same-origin',
+  },
+});
+
+const client = new ApolloClient({
+  networkInterface,
+});
 
 const App = () => (
   <ApolloProvider client={client}>
-    <div>
-      <Header dividing>Mat Che</Header>
+    <Container text>
+      <Header as="h1" block>Mat Che</Header>
       <SendMessageWithData />
-    </div>
+    </Container>
   </ApolloProvider>
 );
 

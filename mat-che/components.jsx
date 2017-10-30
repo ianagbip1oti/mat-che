@@ -87,7 +87,7 @@ export class SendMessage extends React.Component {
           <Icon name="attention" />
           <Message.Content>
             <Message.Header>Error</Message.Header>
-            {error.message}
+            {this.props.data.error.message}
           </Message.Content>
         </Message>
       );

@@ -1,4 +1,5 @@
 import { makeExecutableSchema } from "graphql-tools";
+import { resolvers } from "./resolvers";
 
 export const typeDefs = `
 
@@ -16,4 +17,4 @@ type Mutation {
 
 `;
 
-export const schema = makeExecutableSchema({ typeDefs });
+export const schema = makeExecutableSchema({ typeDefs, resolvers });
