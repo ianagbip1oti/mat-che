@@ -1,24 +1,49 @@
 import debug from "debug";
 import util from "util";
 
+import R from "ramda";
+
 const log = debug("mat-che:resolvers");
 
 const users = {};
+var messages = [];
+
+const getUser = function(sid) {
+  if (!users[sid]) return null;
+
+  return { name: users[sid] };
+};
+
+class Message {
+  constructor(user, content) {
+    this.user = user;
+    this.content = content || "";
+  }
+
+  save() {
+    if (!this.user) return;
+    if (R.trim(this.content) === "") return;
+
+    messages = R.take(37, R.append(this, messages));
+  }
+}
 
 export const resolvers = {
   Query: {
-    me: (root, args, ctx) => {
-      if (!users[ctx.sid]) return null;
-
-      return { name: users[ctx.sid] };
-    }
+    me: (root, args, ctx) => getUser(ctx.sid)
   },
   Mutation: {
     setName: (root, args, ctx) => {
-      log("setting user for: " + ctx.sid + " to " + args["name"]);
-      users[ctx.sid] = args["name"];
+      users[ctx.sid] = R.trim(args["name"]);
 
-      return { name: users[ctx.sid] };
+      return getUser(ctx.sid);
+    },
+    sendMessage: (root, args, ctx) => {
+      const msg = new Message(getUser(ctx.sid), args["content"]);
+
+      msg.save();
+
+      return msg;
     }
   }
 };

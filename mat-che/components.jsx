@@ -1,8 +1,12 @@
 import React from "react";
+import R from "ramda";
 
-import { gql, graphql } from "react-apollo";
-
+import { compose, gql, graphql } from "react-apollo";
 import { Button, Header, Icon, Input, Message, Modal } from "semantic-ui-react";
+
+import debug from "debug";
+
+const log = debug("mat-che:components");
 
 const meQuery = gql`
   query meQuery {
@@ -20,6 +24,14 @@ const setNameMutation = gql`
   }
 `;
 
+const sendMessageMutation = gql`
+  mutation sendMessage($content: String!) {
+    sendMessage(content: $content) {
+      content
+    }
+  }
+`;
+
 class SetName extends React.Component {
   constructor(props) {
     super(props);
@@ -27,7 +39,7 @@ class SetName extends React.Component {
   }
 
   isError() {
-    return this.state.name === "";
+    return R.trim(this.state.name) === "";
   }
 
   onClick(e) {
@@ -58,6 +70,7 @@ class SetName extends React.Component {
                 />
               }
               fluid
+              value={this.state.name}
               error={this.isError()}
               onChange={e => this.onChange(e)}
             />
@@ -71,6 +84,21 @@ class SetName extends React.Component {
 const SetNameWithData = graphql(setNameMutation)(SetName);
 
 export class SendMessage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { content: "" };
+  }
+
+  onClick(e) {
+    if (R.trim(this.state.content) === "") return;
+    this.props.mutate({ variables: { content: this.state.content } });
+    this.setState({ content: "" });
+  }
+
+  onChange(e) {
+    this.setState({ content: e.target.value });
+  }
+
   render() {
     if (this.props.data.loading) {
       return (
@@ -100,11 +128,24 @@ export class SendMessage extends React.Component {
     return (
       <Input
         label={this.props.data.me.name}
-        icon={{ name: "send", link: true }}
+        icon={
+          <Icon
+            name="send"
+            bordered
+            inverted
+            link
+            onClick={e => this.onClick(e)}
+          />
+        }
         fluid
+        value={this.state.content}
+        onChange={e => this.onChange(e)}
       />
     );
   }
 }
 
-export const SendMessageWithData = graphql(meQuery)(SendMessage);
+export const SendMessageWithData = compose(
+  graphql(meQuery),
+  graphql(sendMessageMutation)
+)(SendMessage);

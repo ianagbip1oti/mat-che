@@ -7,12 +7,18 @@ type User {
   name: String!
 }
 
+type Message {
+  user: User!
+  content: String!
+}
+
 type Query {
   me: User
 }
 
 type Mutation {
   setName(name: String!): User
+  sendMessage(content: String!): Message
 }
 
 `;
