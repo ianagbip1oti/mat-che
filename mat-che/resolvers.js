@@ -1,3 +1,5 @@
+import { PubSub, withFilter } from "graphql-subscriptions";
+
 import debug from "debug";
 import util from "util";
 
@@ -6,7 +8,8 @@ import R from "ramda";
 const log = debug("mat-che:resolvers");
 
 const users = {};
-var messages = [];
+
+const pubsub = new PubSub();
 
 const getUser = function(sid) {
   if (!users[sid]) return null;
@@ -24,7 +27,13 @@ class Message {
     if (!this.user) return;
     if (R.trim(this.content) === "") return;
 
-    messages = R.take(37, R.append(this, messages));
+    log("publishing message...");
+    
+    const payload = {
+      "user" : this.user,
+      "content" : this.content
+    }
+    pubsub.publish("messageAdded", { "messageAdded" : payload });
   }
 }
 
@@ -44,6 +53,11 @@ export const resolvers = {
       msg.save();
 
       return msg;
+    }
+  },
+  Subscription: {
+    messageAdded: {
+      subscribe: () => pubsub.asyncIterator("messageAdded")
     }
   }
 };

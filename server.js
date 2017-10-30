@@ -5,7 +5,13 @@ import session from "express-session";
 
 import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 
+import { execute, subscribe } from "graphql";
+import { createServer } from "http";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+
 const app = express();
+
+const PORT = 3000;
 
 import { schema } from "./mat-che/schema.js";
 
@@ -34,9 +40,25 @@ app.use(
 
 app.use(
   "/graphiql",
-  graphiqlExpress({
-    endpointURL: "/graphql"
-  })
+  graphiqlExpress(req => ({
+    endpointURL: "/graphql",
+    subscriptionsEndpoint: `ws://${req.headers.host}/subscriptions`
+  }))
 );
 
-app.listen(3000);
+const ws = createServer(app);
+
+ws.listen(PORT, () => {
+  new SubscriptionServer(
+    {
+      execute,
+      subscribe,
+      schema
+    },
+    {
+      server: ws,
+      path: "/subscriptions"
+    }
+  );
+});
+

@@ -1,4 +1,5 @@
 import { makeExecutableSchema } from "graphql-tools";
+
 import { resolvers } from "./resolvers";
 
 export const typeDefs = `
@@ -19,6 +20,10 @@ type Query {
 type Mutation {
   setName(name: String!): User
   sendMessage(content: String!): Message
+}
+
+type Subscription {
+  messageAdded: Message
 }
 
 `;
