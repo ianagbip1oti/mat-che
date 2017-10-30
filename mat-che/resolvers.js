@@ -28,12 +28,12 @@ class Message {
     if (R.trim(this.content) === "") return;
 
     log("publishing message...");
-    
+
     const payload = {
-      "user" : this.user,
-      "content" : this.content
-    }
-    pubsub.publish("messageAdded", { "messageAdded" : payload });
+      user: this.user,
+      content: this.content
+    };
+    pubsub.publish("messageAdded", { messageAdded: payload });
   }
 }
 
