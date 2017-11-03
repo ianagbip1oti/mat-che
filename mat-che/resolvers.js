@@ -4,6 +4,7 @@ import debug from "debug";
 import util from "util";
 
 import R from "ramda";
+import uuidv4 from "uuid/v4";
 
 const log = debug("mat-che:resolvers");
 
@@ -19,6 +20,7 @@ const getUser = function(sid) {
 
 class Message {
   constructor(user, content) {
+    this.id = uuidv4();
     this.user = user;
     this.content = content || "";
   }
@@ -30,6 +32,7 @@ class Message {
     log("publishing message...");
 
     const payload = {
+      id: this.id,
       user: this.user,
       content: this.content
     };

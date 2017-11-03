@@ -9,6 +9,7 @@ type User {
 }
 
 type Message {
+  id: ID!
   user: User!
   content: String!
 }

@@ -3,13 +3,18 @@ import { render } from "react-dom";
 
 import { Container, Header, Menu, Segment } from "semantic-ui-react";
 
-import { SendMessageWithData } from "./mat-che/components.jsx";
+import { ChatWithData, SendMessageWithData } from "./mat-che/components.jsx";
 
 import {
   ApolloClient,
   ApolloProvider,
   createNetworkInterface
 } from "react-apollo";
+
+import {
+  SubscriptionClient,
+  addGraphQLSubscriptions
+} from "subscriptions-transport-ws";
 
 const networkInterface = createNetworkInterface({
   uri: "/graphql",
@@ -18,8 +23,17 @@ const networkInterface = createNetworkInterface({
   }
 });
 
+const wsClient = new SubscriptionClient(`ws://${location.host}/subscriptions`, {
+  reconnect: true
+});
+
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+  networkInterface,
+  wsClient
+);
+
 const client = new ApolloClient({
-  networkInterface
+  networkInterface: networkInterfaceWithSubscriptions
 });
 
 const App = () => (
@@ -28,6 +42,7 @@ const App = () => (
       <Header as="h1" block>
         Mat Che
       </Header>
+      <ChatWithData />
       <SendMessageWithData />
     </Container>
   </ApolloProvider>

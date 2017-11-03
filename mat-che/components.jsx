@@ -1,8 +1,16 @@
 import React from "react";
 import R from "ramda";
 
-import { compose, gql, graphql } from "react-apollo";
-import { Button, Header, Icon, Input, Message, Modal } from "semantic-ui-react";
+import { compose, gql, graphql, withApollo } from "react-apollo";
+import {
+  Button,
+  Header,
+  Icon,
+  Input,
+  List,
+  Message,
+  Modal
+} from "semantic-ui-react";
 
 import debug from "debug";
 
@@ -31,6 +39,60 @@ const sendMessageMutation = gql`
     }
   }
 `;
+
+const messageAdded = gql`
+  subscription messageAdded {
+    messageAdded {
+      id
+      user {
+        name
+      }
+      content
+    }
+  }
+`;
+
+class Chat extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { messages: [] };
+  }
+
+  addMessage(m) {
+    this.setState({
+      messages: R.takeLast(37, R.append(m, this.state.messages))
+    });
+  }
+
+  componentDidMount() {
+    this.props.client.subscribe({ query: messageAdded }).subscribe({
+      next: data => {
+        this.addMessage(data.messageAdded);
+      },
+      error(err) {
+        console.log(err);
+      }
+    });
+  }
+
+  render() {
+    return (
+      <List celled>
+        {R.map(
+          m => (
+            <List.Item key={m.id}>
+              <List.Header>{m.user.name}</List.Header>
+              {m.content}
+            </List.Item>
+          ),
+          this.state.messages
+        )}
+      </List>
+    );
+  }
+}
+
+export const ChatWithData = withApollo(Chat);
 
 class SetName extends React.Component {
   constructor(props) {
