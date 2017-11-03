@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "engines": {
+    "node": "7.10.x"
+  },
   "scripts": {
     "build": "webpack -d",
     "format": "prettier --write {.,mat-che}/*.{js,jsx}",
