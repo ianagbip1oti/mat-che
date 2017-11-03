@@ -39,13 +39,14 @@
     "react-dom": "16.0.0",
     "semantic-ui-react": "0.75.1",
     "subscriptions-transport-ws": "0.8.3",
-    "uuid": "^3.1.0"
+    "uuid": "3.1.0",
+    "webpack": "3.8.1"
   },
   "devDependencies": {
     "enzyme": "3.1.0",
     "nodemon": "1.12.1",
     "npm-run-all": "4.1.1",
     "prettier": "1.7.4",
-    "webpack": "^3.8.1"
+
   }
 }
