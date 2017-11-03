@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { Container, Header, Menu, Segment } from "semantic-ui-react";
+import { Container, Header, Menu, Segment, Sticky } from "semantic-ui-react";
 
 import { ChatWithData, SendMessageWithData } from "./mat-che/components.jsx";
 
@@ -42,8 +42,8 @@ const App = () => (
       <Header as="h1" block>
         Mat Che
       </Header>
-      <ChatWithData />
       <SendMessageWithData />
+      <ChatWithData />
     </Container>
   </ApolloProvider>
 );

@@ -60,7 +60,7 @@ class Chat extends React.Component {
 
   addMessage(m) {
     this.setState({
-      messages: R.takeLast(37, R.append(m, this.state.messages))
+      messages: R.take(37, R.prepend(m, this.state.messages))
     });
   }
 
