@@ -13,7 +13,8 @@
     "prestart": "npm-run-all format build",
     "start": "npm-run-all --parallel watch:server watch:build",
     "watch:build": "webpack --watch",
-    "watch:server": "DEBUG=* nodemon ./server.js --exec babel-node -e js"
+    "watch:server": "DEBUG=* nodemon ./server.js --exec babel-node -e js",
+    "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
   },
   "author": "Lana",
   "license": "MIT",
