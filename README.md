@@ -1,6 +1,6 @@
 # Mat Che
 
-Anonymous chat with limited history
+Anonymous chat. No History.
 
 http://mat-che.herokuapp.com/
 
