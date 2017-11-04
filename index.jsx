@@ -23,9 +23,14 @@ const networkInterface = createNetworkInterface({
   }
 });
 
-const wsClient = new SubscriptionClient(`ws://${location.host}/subscriptions`, {
-  reconnect: true
-});
+const wsClient = new SubscriptionClient(
+  `${"https:" === location.protocol
+    ? "wss"
+    : "ws"}://${location.host}/subscriptions`,
+  {
+    reconnect: true
+  }
+);
 
 const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   networkInterface,
