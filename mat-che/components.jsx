@@ -114,7 +114,7 @@ class SetName extends React.Component {
     return R.trim(this.state.name) === "";
   }
 
-  onClick(e) {
+  onClick() {
     if (this.isError()) return;
     this.props
       .mutate({ variables: { name: this.state.name } })
@@ -123,6 +123,12 @@ class SetName extends React.Component {
 
   onChange(e) {
     this.setState({ name: e.target.value });
+  }
+
+  onKeyPress(e) {
+    if (e.key === "Enter") {
+      this.onClick();
+    }
   }
 
   render() {
@@ -138,13 +144,14 @@ class SetName extends React.Component {
                   bordered
                   inverted
                   link
-                  onClick={e => this.onClick(e)}
+                  onClick={e => this.onClick()}
                 />
               }
               fluid
               value={this.state.name}
               error={this.isError()}
               onChange={e => this.onChange(e)}
+              onKeyPress={e => this.onKeyPress(e)}
             />
           </Modal.Description>
         </Modal.Content>
@@ -161,7 +168,7 @@ export class SendMessage extends React.Component {
     this.state = { content: "" };
   }
 
-  onClick(e) {
+  onClick() {
     if (R.trim(this.state.content) === "") return;
     this.props.mutate({ variables: { content: this.state.content } });
     this.setState({ content: "" });
@@ -169,6 +176,12 @@ export class SendMessage extends React.Component {
 
   onChange(e) {
     this.setState({ content: e.target.value });
+  }
+
+  onKeyPress(e) {
+    if (e.key === "Enter") {
+      this.onClick();
+    }
   }
 
   render() {
@@ -206,12 +219,13 @@ export class SendMessage extends React.Component {
             bordered
             inverted
             link
-            onClick={e => this.onClick(e)}
+            onClick={e => this.onClick()}
           />
         }
         fluid
         value={this.state.content}
         onChange={e => this.onChange(e)}
+        onKeyPress={e => this.onKeyPress(e)}
       />
     );
   }
