@@ -6,6 +6,7 @@ export const typeDefs = `
 
 type User {
   name: String!
+  color: String!
 }
 
 type Message {

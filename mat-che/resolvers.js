@@ -15,7 +15,7 @@ const pubsub = new PubSub();
 const getUser = function(sid) {
   if (!users[sid]) return null;
 
-  return { name: users[sid] };
+  return users[sid];
 };
 
 class Message {
@@ -40,13 +40,39 @@ class Message {
   }
 }
 
+const randomLetter = function(letters) {
+  return letters[Math.floor(Math.random() * letters.length)];
+};
+
+const shuffle = function(a) {
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+};
+
+const randomUserColor = function() {
+  const primary = "012345678";
+  const secondary = "0123456789ABCDEF";
+
+  let components = [
+    randomLetter(primary) + randomLetter(primary),
+    randomLetter(secondary) + randomLetter(secondary),
+    randomLetter(secondary) + randomLetter(secondary)
+  ];
+
+  shuffle(components);
+
+  return "#" + R.join("", components);
+};
+
 export const resolvers = {
   Query: {
     me: (root, args, ctx) => getUser(ctx.sid)
   },
   Mutation: {
     setName: (root, args, ctx) => {
-      users[ctx.sid] = R.trim(args["name"]);
+      users[ctx.sid] = { name: R.trim(args["name"]), color: randomUserColor() };
 
       return getUser(ctx.sid);
     },
