@@ -46,6 +46,7 @@ const messageAdded = gql`
       id
       user {
         name
+        color
       }
       content
     }
@@ -80,8 +81,17 @@ class Chat extends React.Component {
       <List celled>
         {R.map(
           m => (
-            <List.Item key={m.id}>
-              <List.Header>{m.user.name}</List.Header>
+            <List.Item
+              key={m.id}
+              style={{
+                borderLeftStyle: "solid",
+                borderLeftWidth: 2,
+                borderLeftColor: m.user.color
+              }}
+            >
+              <List.Header style={{ color: m.user.color }}>
+                {m.user.name}
+              </List.Header>
               {m.content}
             </List.Item>
           ),
