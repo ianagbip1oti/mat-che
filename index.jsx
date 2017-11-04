@@ -1,7 +1,14 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { Container, Header, Menu, Segment, Sticky } from "semantic-ui-react";
+import {
+  Container,
+  Header,
+  Menu,
+  Message,
+  Segment,
+  Sticky
+} from "semantic-ui-react";
 
 import { ChatWithData, SendMessageWithData } from "./mat-che/components.jsx";
 
@@ -44,9 +51,10 @@ const client = new ApolloClient({
 const App = () => (
   <ApolloProvider client={client}>
     <Container text>
-      <Header as="h1" block>
-        Mat Che
-      </Header>
+      <Message>
+        <h1 style={{ display: "inline" }}>Mat.Che. </h1>
+        <span style={{ whiteSpace: "nowrap" }}>Anonymous Chat. No History.</span>
+      </Message>
       <SendMessageWithData />
       <ChatWithData />
     </Container>
