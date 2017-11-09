@@ -13,6 +13,8 @@ const app = express();
 
 const PORT = process.env.PORT || 3000;
 
+app.set("view engine", "ejs");
+
 import { schema } from "./mat-che/schema.js";
 
 app.use(
@@ -23,7 +25,9 @@ app.use(
   })
 );
 
-app.get("/", (req, res) => res.sendFile(path.join(__dirname + "/index.html")));
+app.get("/", (req, res) =>
+  res.render("index", { google_tracking_id: process.env.GOOGLE_TRACKING_ID })
+);
 
 app.get("/bundle.js", (req, res) =>
   res.sendFile(path.join(__dirname + "/build/bundle.js"))
