@@ -53,7 +53,9 @@ const App = () => (
     <Container text>
       <Message>
         <h1 style={{ display: "inline" }}>Mat.Che. </h1>
-        <span style={{ whiteSpace: "nowrap" }}>Anonymous Chat. No History.</span>
+        <span style={{ whiteSpace: "nowrap" }}>
+          Anonymous Chat. No History.
+        </span>
       </Message>
       <SendMessageWithData />
       <ChatWithData />
