@@ -4,21 +4,11 @@ import bodyParser from "body-parser";
 import session from "express-session";
 import memoryStore from "memorystore";
 
-import {
-  graphqlExpress,
-  graphiqlExpress
-} from "graphql-server-express";
+import { graphqlExpress, graphiqlExpress } from "graphql-server-express";
 
-import {
-  execute,
-  subscribe
-} from "graphql";
-import {
-  createServer
-} from "http";
-import {
-  SubscriptionServer
-} from "subscriptions-transport-ws";
+import { execute, subscribe } from "graphql";
+import { createServer } from "http";
+import { SubscriptionServer } from "subscriptions-transport-ws";
 
 const app = express();
 
@@ -26,11 +16,9 @@ const PORT = process.env.PORT || 3000;
 
 app.set("view engine", "ejs");
 
-import {
-  schema
-} from "./mat-che/schema.js";
+import { schema } from "./mat-che/schema.js";
 
-const MemoryStore = memoryStore(session)
+const MemoryStore = memoryStore(session);
 
 app.use(
   session({
@@ -75,12 +63,15 @@ app.use(
 const ws = createServer(app);
 
 ws.listen(PORT, () => {
-  new SubscriptionServer({
-    execute,
-    subscribe,
-    schema
-  }, {
-    server: ws,
-    path: "/subscriptions"
-  });
+  new SubscriptionServer(
+    {
+      execute,
+      subscribe,
+      schema
+    },
+    {
+      server: ws,
+      path: "/subscriptions"
+    }
+  );
 });
