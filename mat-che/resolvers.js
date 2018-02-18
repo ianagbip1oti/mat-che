@@ -12,10 +12,10 @@ const users = {};
 
 const pubsub = new PubSub();
 
-const getUser = function(sid) {
-  if (!users[sid]) return null;
+const getUser = function(session) {
+  if (!session.userId || !users[session.userId]) return null;
 
-  return users[sid];
+  return users[session.userId];
 };
 
 class Message {
@@ -68,16 +68,19 @@ const randomUserColor = function() {
 
 export const resolvers = {
   Query: {
-    me: (root, args, ctx) => getUser(ctx.sid)
+    me: (root, args, ctx) => getUser(ctx.session)
   },
   Mutation: {
     setName: (root, args, ctx) => {
-      users[ctx.sid] = { name: R.trim(args["name"]), color: randomUserColor() };
+      const userId = uuidv4();
 
-      return getUser(ctx.sid);
+      ctx.session.userId = userId;
+      users[userId] = { name: R.trim(args["name"]), color: randomUserColor() };
+
+      return getUser(ctx.session);
     },
     sendMessage: (root, args, ctx) => {
-      const msg = new Message(getUser(ctx.sid), args["content"]);
+      const msg = new Message(getUser(ctx.session), args["content"]);
 
       msg.save();
 
