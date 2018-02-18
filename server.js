@@ -47,7 +47,7 @@ app.use(
   graphqlExpress(req => ({
     schema: schema,
     context: {
-      sid: req.session.id
+      session: req.session
     }
   }))
 );
