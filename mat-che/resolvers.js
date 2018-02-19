@@ -10,6 +10,8 @@ const log = debug("mat-che:resolvers");
 
 const users = {};
 
+var messages = [];
+
 const pubsub = new PubSub();
 
 const getUser = function(session) {
@@ -36,6 +38,7 @@ class Message {
       user: this.user,
       content: this.content
     };
+    messages = R.take(37, R.prepend(payload, messages));
     pubsub.publish("messageAdded", { messageAdded: payload });
   }
 }
@@ -68,7 +71,8 @@ const randomUserColor = function() {
 
 export const resolvers = {
   Query: {
-    me: (root, args, ctx) => getUser(ctx.session)
+    me: (root, args, ctx) => getUser(ctx.session),
+    messages: (root, args, ctx) => messages
   },
   Mutation: {
     setName: (root, args, ctx) => {

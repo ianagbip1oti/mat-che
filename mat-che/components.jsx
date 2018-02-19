@@ -24,6 +24,19 @@ const meQuery = gql`
   }
 `;
 
+const messagesQuery = gql`
+  query messagesQuery {
+    messages {
+      id
+      user {
+        name
+        color
+      }
+      content
+    }
+  }
+`;
+
 const setNameMutation = gql`
   mutation setName($name: String!) {
     setName(name: $name) {
@@ -66,6 +79,10 @@ class Chat extends React.Component {
   }
 
   componentDidMount() {
+    this.props.client
+      .query({ query: messagesQuery })
+      .then(rsp => this.setState({ messages: rsp.data.messages }));
+
     this.props.client.subscribe({ query: messageAdded }).subscribe({
       next: data => {
         this.addMessage(data.messageAdded);

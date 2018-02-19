@@ -17,6 +17,7 @@ type Message {
 
 type Query {
   me: User
+  messages: [Message]
 }
 
 type Mutation {
